@@ -41,20 +41,7 @@ ml-house-price/
 │ └── train.ipynb # Data analysis & model training
 │
 ├── requirements.txt
-└── README.mdml-house-price/
-│
-├── app/
-│ ├── main.py # FastAPI app
-│ └── schemas.py # Pydantic request models
-│
-├── models/
-│ └── house_model.pkl # Trained ML model
-│
-├── notebooks/
-│ └── train.ipynb # Data analysis & model training
-│
-├── requirements.txt
-└── README.md
+└── README.
 
 
 ## 🧠 Quick reinforcement (important)
