@@ -1,0 +1,57 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Virtual environments ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Jupyter / notebooks ---
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+# --- ML / experiments ---
+runs/
+mlruns/
+wandb/
+lightning_logs/
+logs/
+*.log
+
+# --- Data & model artifacts (usually large) ---
+data/
+!data/.gitkeep
+models/
+!models/.gitkeep
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.pt
+*.pth
+*.csv
+*.parquet
+
+# --- Secrets / local config ---
+.env
+.env.*
+*.key
+*.pem
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
