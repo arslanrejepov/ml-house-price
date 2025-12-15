@@ -1,18 +1,33 @@
 from fastapi import FastAPI
 import joblib
+from pathlib import Path
 
 from .schemas import HouseInput
 
-model = joblib.load("../models/house_model.pkl")
-
 app = FastAPI()
 
+# ===============================
+# Load model using absolute path
+# ===============================
+BASE_DIR = Path(__file__).resolve().parent.parent
+MODEL_PATH = BASE_DIR / "models" / "house_model.pkl"
+
+model = joblib.load(MODEL_PATH)
+
+
+# ===============================
+# Test endpoint
+# ===============================
 @app.get("/")
 def root():
     return {"message": "House Price Prediction API is running"}
 
-@app.host("/predict")
-def predict_price(data : HouseInput):
+
+# ===============================
+# Prediction endpoint
+# ===============================
+@app.post("/predict")
+def predict_price(data: HouseInput):
     features = [[
         data.MedInc,
         data.HouseAge,
