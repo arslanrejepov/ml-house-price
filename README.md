@@ -28,6 +28,8 @@ This project is an end-to-end **Machine Learning Engineer** project that trains 
 
 ## 📁 Project Structure
 
+```
+
 ml-house-price/
 │
 ├── app/
@@ -42,6 +44,8 @@ ml-house-price/
 │
 ├── requirements.txt
 └── README.
+
+```
 
 
 ## 🧠 Quick reinforcement (important)
