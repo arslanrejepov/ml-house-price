@@ -1,5 +1,6 @@
 import os
-import random
+import joblib
+import numpy as np
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -7,30 +8,38 @@ from .schemas import HouseInput
 
 app = FastAPI()
 
-# --- CRITICAL FIX: PATH SETUP ---
-# We get the folder where THIS file (main.py) is located (the 'app' folder)
-current_dir = os.path.dirname(os.path.abspath(__file__))
+# --- PATHS ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+INDEX_HTML = os.path.join(BASE_DIR, "index.html")
+MODEL_PATH = os.path.join(BASE_DIR, "model.joblib")
 
-# We tell Python that 'static' and 'index.html' are right here in the same folder
-static_dir = os.path.join(current_dir, "static")
-index_path = os.path.join(current_dir, "index.html")
+# --- STATIC ---
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
-# Mount the static folder so the HTML can see CSS and images
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
-
-# --- ROUTES ---
+# --- LOAD MODEL ONCE ---
+model = joblib.load(MODEL_PATH)
 
 @app.get("/")
-async def read_index():
-    return FileResponse(index_path)
+async def index():
+    return FileResponse(INDEX_HTML)
 
 @app.post("/predict")
-async def predict_house(data: HouseInput):
-    # Fake prediction logic for testing
-    fake_price = (data.MedInc * 40000) + (data.AveRooms * 5000) + random.randint(-5000, 5000)
-    
+async def predict(data: HouseInput):
+    features = np.array([[
+        data.MedInc,
+        data.AveRooms,
+        data.AveBedrms,
+        data.Population,
+        data.AveOccup,
+        data.Latitude,
+        data.Longitude
+    ]])
+
+    prediction = model.predict(features)[0]
+
     return {
-        "prediction_text": f"${fake_price:,.2f}", 
-        "raw_value": fake_price,
+        "prediction": float(prediction),
+        "prediction_text": f"${prediction * 100000:,.2f}",
         "status": "success"
     }
