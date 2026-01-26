@@ -1,23 +1,36 @@
 import os
+import random
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from .schemas import HouseInput
 
 app = FastAPI()
 
-# 1. Get the current folder where this main.py file lives
-base_dir = os.path.dirname(__file__)
+# --- CRITICAL FIX: PATH SETUP ---
+# We get the folder where THIS file (main.py) is located (the 'app' folder)
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# 2. Tell the code that 'static' and 'index.html' are right here next to main.py
-static_dir = os.path.join(base_dir, "static")
-index_path = os.path.join(base_dir, "index.html")
+# We tell Python that 'static' and 'index.html' are right here in the same folder
+static_dir = os.path.join(current_dir, "static")
+index_path = os.path.join(current_dir, "index.html")
 
-# 3. Mount the static directory using the absolute path
+# Mount the static folder so the HTML can see CSS and images
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# --- ROUTES ---
 
 @app.get("/")
 async def read_index():
-    # 4. Serve the index.html using the absolute path
     return FileResponse(index_path)
 
-# ... (Keep your existing prediction endpoint code below here)
+@app.post("/predict")
+async def predict_house(data: HouseInput):
+    # Fake prediction logic for testing
+    fake_price = (data.MedInc * 40000) + (data.AveRooms * 5000) + random.randint(-5000, 5000)
+    
+    return {
+        "prediction_text": f"${fake_price:,.2f}", 
+        "raw_value": fake_price,
+        "status": "success"
+    }
