@@ -1,133 +1,214 @@
-:root {
-    --bg: #0f172a;
-    --card: #111827;
-    --text: #e5e7eb;
-    --muted: #9ca3af;
-    --accent: #6366f1;
-    --border: #1f2933;
-}
-
+/* Reset & Base Styles */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root {
+    --main-bg-color: #052b18; /* Deep Dark Green */
+    --glass-bg: rgba(255, 255, 255, 0.05); /* Transparent white for card */
+    --input-bg: #0d3d24; /* Slightly lighter green for inputs */
+    --text-white: #ffffff;
+    --accent-color: #4ade80; /* Light green accent for focus states */
 }
 
 body {
-    background: linear-gradient(180deg, #020617, #020617);
-    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--main-bg-color);
+    color: var(--text-white);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
 }
 
+/* Background Logo Watermark */
+body::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vh;
+    height: 60vh;
+    /* Since style.css and logo.png are in the same folder, this works */
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.05;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Header / Navbar */
 .navbar {
     display: flex;
     justify-content: space-between;
-    padding: 1rem 2rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(2, 6, 23, 0.8);
-    backdrop-filter: blur(10px);
+    align-items: center;
+    padding: 1.5rem 3rem;
+    background: transparent;
 }
 
-.logo {
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-logo {
+    height: 40px;
+    width: auto;
+}
+
+.brand-name {
     font-weight: 700;
     font-size: 1.2rem;
-    color: var(--accent);
+    color: var(--accent-color);
 }
 
-.navbar a {
-    color: var(--muted);
-    margin-left: 1.5rem;
+.nav-links a {
+    color: #aaaaaa;
     text-decoration: none;
+    margin-left: 2rem;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
 }
 
-.navbar a:hover {
-    color: var(--text);
+.nav-links a:hover {
+    color: var(--text-white);
 }
 
+/* Main Container */
 .container {
-    max-width: 960px;
-    margin: 3rem auto;
-    padding: 0 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.hero {
+.hero-text {
     text-align: center;
     margin-bottom: 3rem;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 0.75rem;
+.hero-text h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #ffffff, #bbf7d0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-.hero p {
-    color: var(--muted);
+.hero-text p {
+    color: #cccccc;
+    font-size: 1.1rem;
 }
 
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
+/* Glassmorphism Card for Form */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-}
-
-.card h2 {
-    margin-bottom: 1rem;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-input {
-    padding: 0.75rem;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: #020617;
-    color: var(--text);
-}
-
-input:focus {
-    outline: none;
-    border-color: var(--accent);
-}
-
-button {
+    padding: 3rem;
     width: 100%;
-    padding: 0.9rem;
-    border-radius: 12px;
-    border: none;
-    background: var(--accent);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
 }
 
-button:hover {
-    opacity: 0.9;
+.prediction-form {
+    width: 100%;
 }
 
-.result {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background: #020617;
-    border-radius: 10px;
-    border: 1px solid var(--border);
+/* Grid Layout for Inputs */
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
     font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #e2e8f0;
+    font-weight: 500;
 }
 
-.hidden {
-    display: none;
+.input-group input {
+    background-color: var(--input-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--text-white);
+    font-size: 1rem;
+    transition: all 0.2s ease;
 }
 
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background-color: #0f4229;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Button Styling */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--text-white);
+    color: var(--main-bg-color);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+    background-color: #f0f0f0;
+}
+
+/* Footer */
 footer {
     text-align: center;
     padding: 2rem;
-    color: var(--muted);
-    font-size: 0.85rem;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+    
+    .glass-card {
+        padding: 1.5rem;
+    }
 }

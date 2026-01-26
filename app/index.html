@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML-HOUSE Prediction</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo-container">
+            <img src="/static/logo.png" alt="ML-HOUSE Logo" class="nav-logo">
+            <span class="brand-name">ML-HOUSE</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#">API Docs</a>
+            <a href="#">About</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="hero-text">
+            <h1>Machine Learning API</h1>
+            <p>Test, visualize, and interact with house price models using the parameters below.</p>
+        </div>
+
+        <div class="glass-card">
+            <form class="prediction-form">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="MedInc">Median Income (MedInc)</label>
+                        <input type="number" step="0.01" id="MedInc" name="MedInc" placeholder="e.g. 8.32">
+                    </div>
+                    <div class="input-group">
+                        <label for="HouseAge">House Age</label>
+                        <input type="number" step="1" id="HouseAge" name="HouseAge" placeholder="e.g. 41">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="AveRooms">Average Rooms</label>
+                        <input type="number" step="0.1" id="AveRooms" name="AveRooms" placeholder="e.g. 6.9">
+                    </div>
+                    <div class="input-group">
+                        <label for="AveBedrms">Average Bedrooms</label>
+                        <input type="number" step="0.1" id="AveBedrms" name="AveBedrms" placeholder="e.g. 1.0">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Population">Population</label>
+                        <input type="number" step="1" id="Population" name="Population" placeholder="e.g. 322">
+                    </div>
+                    <div class="input-group">
+                        <label for="AveOccup">Average Occupancy</label>
+                        <input type="number" step="0.01" id="AveOccup" name="AveOccup" placeholder="e.g. 2.55">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="Latitude">Latitude</label>
+                        <input type="number" step="0.0001" id="Latitude" name="Latitude" placeholder="e.g. 37.88">
+                    </div>
+                    <div class="input-group">
+                        <label for="Longitude">Longitude</label>
+                        <input type="number" step="0.0001" id="Longitude" name="Longitude" placeholder="e.g. -122.23">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Run Prediction</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 ML-HOUSE</p>
+    </footer>
+
+</body>
+</html>
