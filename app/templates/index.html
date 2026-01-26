@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ML-HOUSE</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">ML-HOUSE</div>
+        <nav>
+            <a href="/docs">API Docs</a>
+            <a href="#">About</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Machine Learning API</h1>
+            <p>Test, visualize, and interact with ML models using a modern interface.</p>
+        </section>
+
+        <section class="card">
+            <h2>Test Prediction</h2>
+
+            <form id="predict-form">
+                <div class="grid">
+                    <input type="number" placeholder="Feature 1" required />
+                    <input type="number" placeholder="Feature 2" required />
+                    <input type="number" placeholder="Feature 3" required />
+                </div>
+
+                <button type="submit">Run Prediction</button>
+            </form>
+
+            <pre id="result" class="result hidden"></pre>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 ML-HOUSE</p>
+    </footer>
+
+    <script>
+        document.getElementById("predict-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const res = await fetch("/your-api-endpoint");
+            const data = await res.json();
+
+            const result = document.getElementById("result");
+            result.textContent = JSON.stringify(data, null, 2);
+            result.classList.remove("hidden");
+        });
+    </script>
+
+</body>
+</html>
