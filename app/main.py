@@ -1,43 +1,12 @@
-from fastapi import FastAPI
-import joblib
-from pathlib import Path
-
-from .schemas import HouseInput
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
-# ===============================
-# Load model using absolute path
-# ===============================
-BASE_DIR = Path(__file__).resolve().parent.parent
-MODEL_PATH = BASE_DIR / "models" / "house_model.pkl"
+templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
-model = joblib.load(MODEL_PATH)
-
-
-# ===============================
-# Test endpoint
-# ===============================
 @app.get("/")
-def root():
-    return {"message": "House Price Prediction API is running"}
-
-
-# ===============================
-# Prediction endpoint
-# ===============================
-@app.post("/predict")
-def predict_price(data: HouseInput):
-    features = [[
-        data.MedInc,
-        data.HouseAge,
-        data.AveRooms,
-        data.AveBedrms,
-        data.Population,
-        data.AveOccup,
-        data.Latitude,
-        data.Longitude
-    ]]
-
-    prediction = model.predict(features)
-    return {"predicted_price": float(prediction[0])}
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
