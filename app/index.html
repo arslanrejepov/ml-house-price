@@ -27,47 +27,49 @@
         </div>
 
         <div class="glass-card">
-            <form class="prediction-form">
+            <form id="predictionForm" class="prediction-form">
                 <div class="input-grid">
                     <div class="input-group">
                         <label for="MedInc">Median Income (MedInc)</label>
-                        <input type="number" step="0.01" id="MedInc" name="MedInc" placeholder="e.g. 8.32">
+                        <input type="number" step="0.01" id="MedInc" name="MedInc" placeholder="e.g. 8.32" required>
                     </div>
                     <div class="input-group">
                         <label for="HouseAge">House Age</label>
-                        <input type="number" step="1" id="HouseAge" name="HouseAge" placeholder="e.g. 41">
+                        <input type="number" step="1" id="HouseAge" name="HouseAge" placeholder="e.g. 41" required>
                     </div>
-
                     <div class="input-group">
                         <label for="AveRooms">Average Rooms</label>
-                        <input type="number" step="0.1" id="AveRooms" name="AveRooms" placeholder="e.g. 6.9">
+                        <input type="number" step="0.1" id="AveRooms" name="AveRooms" placeholder="e.g. 6.9" required>
                     </div>
                     <div class="input-group">
                         <label for="AveBedrms">Average Bedrooms</label>
-                        <input type="number" step="0.1" id="AveBedrms" name="AveBedrms" placeholder="e.g. 1.0">
+                        <input type="number" step="0.1" id="AveBedrms" name="AveBedrms" placeholder="e.g. 1.0" required>
                     </div>
-
                     <div class="input-group">
                         <label for="Population">Population</label>
-                        <input type="number" step="1" id="Population" name="Population" placeholder="e.g. 322">
+                        <input type="number" step="1" id="Population" name="Population" placeholder="e.g. 322" required>
                     </div>
                     <div class="input-group">
                         <label for="AveOccup">Average Occupancy</label>
-                        <input type="number" step="0.01" id="AveOccup" name="AveOccup" placeholder="e.g. 2.55">
+                        <input type="number" step="0.01" id="AveOccup" name="AveOccup" placeholder="e.g. 2.55" required>
                     </div>
-
                     <div class="input-group">
                         <label for="Latitude">Latitude</label>
-                        <input type="number" step="0.0001" id="Latitude" name="Latitude" placeholder="e.g. 37.88">
+                        <input type="number" step="0.0001" id="Latitude" name="Latitude" placeholder="e.g. 37.88" required>
                     </div>
                     <div class="input-group">
                         <label for="Longitude">Longitude</label>
-                        <input type="number" step="0.0001" id="Longitude" name="Longitude" placeholder="e.g. -122.23">
+                        <input type="number" step="0.0001" id="Longitude" name="Longitude" placeholder="e.g. -122.23" required>
                     </div>
                 </div>
 
                 <button type="submit" class="submit-btn">Run Prediction</button>
             </form>
+
+            <div id="resultArea" class="result-box" style="display: none;">
+                <h3>Estimated Price</h3>
+                <p id="predictionValue">--</p>
+            </div>
         </div>
     </main>
 
@@ -75,5 +77,44 @@
         <p>&copy; 2026 ML-HOUSE</p>
     </footer>
 
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent page reload
+
+            // 1. Collect Data
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            // 2. Convert to numbers (important for Pydantic)
+            for (let key in data) {
+                data[key] = parseFloat(data[key]);
+            }
+
+            const resultArea = document.getElementById('resultArea');
+            const predictionValue = document.getElementById('predictionValue');
+
+            try {
+                // 3. Send to Backend
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) throw new Error("Server Error");
+
+                const result = await response.json();
+
+                // 4. Update UI
+                predictionValue.textContent = result.prediction_text;
+                resultArea.style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+                predictionValue.textContent = "Error calculating price";
+                resultArea.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
