@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hangzhou — Profile</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ── Page-specific ───────────────────────────────── */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* User card */
+    .user-card {
+      padding: 28px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      position: relative;
+    }
+    .avatar-wrap {
+      width: 80px; height: 80px; border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.8);
+      box-shadow: 0 4px 16px rgba(26,63,111,0.18);
+      background: rgba(26,63,111,0.08);
+    }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .user-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 700; color: var(--accent);
+      text-align: center;
+    }
+    .badge-premium {
+      background: linear-gradient(90deg, #2e6db4, #1a3f6f);
+      color: #fff; font-size: 11px; font-weight: 600;
+      padding: 3px 12px; border-radius: 50px;
+      letter-spacing: 0.06em;
+    }
+    .user-nav { width: 100%; margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+    .user-nav a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: var(--radius-sm);
+      color: var(--text); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: background var(--ease), color var(--ease), transform var(--spring);
+    }
+    .user-nav a:hover { background: rgba(26,63,111,0.09); color: var(--accent); transform: translateX(3px); }
+    .user-nav a.active { background: rgba(26,63,111,0.12); color: var(--accent); font-weight: 600; }
+
+    /* Right panel */
+    .right-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-content: start;
+    }
+
+    /* Saved forecasts */
+    .forecasts-card {
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 10px;
+      position: relative;
+    }
+    .forecast-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+    }
+    .forecast-row .dist { color: var(--muted); font-size: 12px; }
+    .forecast-price { font-weight: 600; color: var(--accent); white-space: nowrap; margin-left: 12px; }
+    .forecast-label {
+      font-size: 11px; color: var(--muted); margin-top: 2px;
+      text-transform: uppercase; letter-spacing: 0.07em;
+    }
+
+    /* Favorite listings */
+    .listings-card {
+      padding: 24px;
+      position: relative;
+    }
+    .listings-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .listing-thumb {
+      position: relative; border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: rgba(26,63,111,0.07);
+      cursor: pointer;
+    }
+    .listing-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .listing-thumb .heart {
+      position: absolute; top: 7px; right: 8px;
+      background: rgba(255,255,255,0.85); border-radius: 50%;
+      width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 14px;
+      transition: transform var(--spring);
+    }
+    .listing-thumb .heart:hover { transform: scale(1.25); }
+    .listing-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 20px 8px 8px;
+      background: linear-gradient(transparent, rgba(12,30,55,0.5));
+      color: #fff; font-size: 11px; font-weight: 500;
+    }
+
+    /* Bottom CTA */
+    .cta-bar {
+      grid-column: 1 / -1;
+      display: flex; justify-content: center; margin-top: 8px;
+    }
+    .cta-bar .btn-primary { width: 100%; max-width: 480px; }
+  </style>
+</head>
+<body>
+
+<div class="page-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="forecast.html" class="nav-logo">
+    <!-- Pagoda SVG -->
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 2l2 4H14l2-4z" fill="currentColor"/>
+      <rect x="13" y="6" width="6" height="3" rx="1" fill="currentColor" opacity=".8"/>
+      <path d="M11 9l2 4H9l2-4z" fill="currentColor" opacity=".9"/>
+      <path d="M21 9l2 4h-4l2-4z" fill="currentColor" opacity=".9"/>
+      <rect x="8" y="13" width="16" height="3" rx="1" fill="currentColor" opacity=".75"/>
+      <path d="M6 16l2 5H4l2-5z" fill="currentColor" opacity=".8"/>
+      <path d="M26 16l2 5h-4l2-5z" fill="currentColor" opacity=".8"/>
+      <rect x="3" y="21" width="26" height="3" rx="1" fill="currentColor" opacity=".7"/>
+      <rect x="13" y="24" width="6" height="6" rx="1" fill="currentColor" opacity=".6"/>
+    </svg>
+    <span>Hangzhou</span>
+  </a>
+  <div class="nav-center"></div>
+  <div class="nav-right">
+    <button class="nav-icon-btn" title="Profile">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+    </button>
+    <button class="nav-icon-btn" id="menuBtn" title="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Drawer -->
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <a href="forecast.html" data-page="forecast.html">🏠 Home</a>
+  <a href="contact.html" data-page="contact.html">✉️ Contact Us</a>
+</div>
+
+<!-- PAGE -->
+<main class="page">
+  <h1>User Profile Dashboard</h1>
+
+  <div class="profile-grid">
+    <!-- User Card -->
+    <div class="card user-card">
+      <div class="avatar-wrap">
+        <!-- ↓ Replace with your avatar image -->
+        <img src="assets/user/avatar.jpg" alt="User Avatar"
+             onerror="this.style.display='none'; this.parentElement.innerHTML='<svg width=\'48\' height=\'48\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%231a3f6f\' stroke-width=\'1.5\' style=\'margin:16px\'><circle cx=\'12\' cy=\'8\' r=\'4\'/><path d=\'M4 20c0-4 3.6-7 8-7s8 3 8 7\'/></svg>'" />
+      </div>
+      <div class="user-name">Li Wei</div>
+      <span class="badge-premium">Premium</span>
+
+      <nav class="user-nav">
+        <a href="forecast.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Home
+        </a>
+        <a href="#" class="active">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+          Navigation
+        </a>
+        <a href="#">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 8A6 6 0 106 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          Notification
+        </a>
+        <a href="index.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          User Profile
+        </a>
+      </nav>
+
+      <!-- Deco pagoda -->
+      <svg class="deco-stamp" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 5l5 10H35L40 5z" fill="#1a3f6f"/>
+        <rect x="33" y="15" width="14" height="6" rx="2" fill="#1a3f6f"/>
+        <path d="M28 21l4 8H24l4-8z" fill="#1a3f6f"/>
+        <path d="M52 21l4 8h-8l4-8z" fill="#1a3f6f"/>
+        <rect x="20" y="29" width="40" height="6" rx="2" fill="#1a3f6f"/>
+        <path d="M14 35l5 10H9l5-10z" fill="#1a3f6f"/>
+        <path d="M66 35l5 10h-10l5-10z" fill="#1a3f6f"/>
+        <rect x="8" y="45" width="64" height="6" rx="2" fill="#1a3f6f"/>
+        <rect x="33" y="51" width="14" height="20" rx="2" fill="#1a3f6f"/>
+      </svg>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <!-- Saved Forecasts -->
+      <div class="card forecasts-card">
+        <h2>My Saved Forecasts</h2>
+
+        <div class="forecast-row">
+          <div>
+            <div>2-Bedroom, Wulin Dist.</div>
+          </div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>2-Bedroom, Wulin Dist.</div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>1-Bedroom, Wulin Dist.</div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>2-Bedroom, Wulin Dist.</div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>1-Bedroom, Wulin Dist.</div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>2-Bedroom, Wulin Dist.</div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>
+            <div class="forecast-label">Previous</div>
+            <div>2-Bedroom, Wulin Dist.</div>
+          </div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+        <div class="forecast-row">
+          <div>
+            <div class="forecast-label">Previous</div>
+            <div>2-Bedroom, Wulin Dist.</div>
+          </div>
+          <div class="forecast-price">¥3,850,000</div>
+        </div>
+      </div>
+
+      <!-- Favorite Listings -->
+      <div class="card listings-card">
+        <h2>Favorite Listings</h2>
+        <div class="listings-grid">
+
+          <!-- ↓ Replace src with your listing images -->
+          <div class="listing-thumb">
+            <img src="assets/listings/listing-1.jpg" alt="Listing 1" onerror="this.style.background='rgba(26,63,111,0.12)';this.style.display='none'" />
+            <span class="heart" onclick="toggleHeart(this)">🤍</span>
+            <div class="listing-caption">1-Bed · Wulin Dist.</div>
+          </div>
+          <div class="listing-thumb">
+            <img src="assets/listings/listing-2.jpg" alt="Listing 2" onerror="this.style.display='none'" />
+            <span class="heart" onclick="toggleHeart(this)">❤️</span>
+            <div class="listing-caption">1-Bed · Wulin Dist.</div>
+          </div>
+          <div class="listing-thumb">
+            <img src="assets/listings/listing-3.jpg" alt="Listing 3" onerror="this.style.display='none'" />
+            <span class="heart" onclick="toggleHeart(this)">🤍</span>
+            <div class="listing-caption">2-Bed · Wulin Dist.</div>
+          </div>
+          <div class="listing-thumb">
+            <img src="assets/listings/listing-4.jpg" alt="Listing 4" onerror="this.style.display='none'" />
+            <span class="heart" onclick="toggleHeart(this)">❤️</span>
+            <div class="listing-caption">3-Bed · Wulin Dist.</div>
+          </div>
+          <div class="listing-thumb">
+            <img src="assets/listings/listing-5.jpg" alt="Listing 5" onerror="this.style.display='none'" />
+            <span class="heart" onclick="toggleHeart(this)">🤍</span>
+            <div class="listing-caption">2-Bed · Wulin Dist.</div>
+          </div>
+          <div class="listing-thumb">
+            <img src="assets/listings/listing-6.jpg" alt="Listing 6" onerror="this.style.display='none'" />
+            <span class="heart" onclick="toggleHeart(this)">🤍</span>
+            <div class="listing-caption">2-Bed · Wulin Dist.</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="cta-bar">
+        <a href="forecast.html" class="btn-primary">Generate New Forecast</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="nav.js"></script>
+<script>
+  function toggleHeart(el) {
+    el.textContent = el.textContent === '🤍' ? '❤️' : '🤍';
+  }
+</script>
+</body>
+</html>
